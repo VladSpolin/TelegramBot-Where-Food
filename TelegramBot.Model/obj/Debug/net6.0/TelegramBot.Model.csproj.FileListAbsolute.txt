@@ -1,0 +1,12 @@
+D:\My projects C#\TelegramBot\TelegramBot.Model\bin\Debug\net6.0\TelegramBot.Model.deps.json
+D:\My projects C#\TelegramBot\TelegramBot.Model\bin\Debug\net6.0\TelegramBot.Model.dll
+D:\My projects C#\TelegramBot\TelegramBot.Model\bin\Debug\net6.0\TelegramBot.Model.pdb
+D:\My projects C#\TelegramBot\TelegramBot.Model\obj\Debug\net6.0\TelegramBot.Model.csproj.AssemblyReference.cache
+D:\My projects C#\TelegramBot\TelegramBot.Model\obj\Debug\net6.0\TelegramBot.Model.GeneratedMSBuildEditorConfig.editorconfig
+D:\My projects C#\TelegramBot\TelegramBot.Model\obj\Debug\net6.0\TelegramBot.Model.AssemblyInfoInputs.cache
+D:\My projects C#\TelegramBot\TelegramBot.Model\obj\Debug\net6.0\TelegramBot.Model.AssemblyInfo.cs
+D:\My projects C#\TelegramBot\TelegramBot.Model\obj\Debug\net6.0\TelegramBot.Model.csproj.CoreCompileInputs.cache
+D:\My projects C#\TelegramBot\TelegramBot.Model\obj\Debug\net6.0\TelegramBot.Model.dll
+D:\My projects C#\TelegramBot\TelegramBot.Model\obj\Debug\net6.0\refint\TelegramBot.Model.dll
+D:\My projects C#\TelegramBot\TelegramBot.Model\obj\Debug\net6.0\TelegramBot.Model.pdb
+D:\My projects C#\TelegramBot\TelegramBot.Model\obj\Debug\net6.0\ref\TelegramBot.Model.dll
