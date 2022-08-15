@@ -3,17 +3,14 @@ using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 using TelegramBot.BusinessLogic.Services.Interfaces;
-using TelegramBot.Common.ViewModels;
 
 namespace TelegramBot.Controllers
 {
     public class TelegramBotController
     {
-        private readonly IRestaurantService _restaurantService;
         private readonly ICategoryService _categoryService;
-        public TelegramBotController(IRestaurantService restaurantService, ICategoryService categoryService)
+        public TelegramBotController(ICategoryService categoryService)
         {
-            _restaurantService = restaurantService;
             _categoryService = categoryService;
         }
 
@@ -38,64 +35,96 @@ namespace TelegramBot.Controllers
         {
             if (message.Text == "/start")
             {
-                ReplyKeyboardMarkup keyboard = new(new KeyboardButton[] { "Начать" })
-                {
-                    ResizeKeyboard = true
-                }; 
-                await botClient.SendTextMessageAsync(message.Chat.Id, "Добро пожаловать!\r\nДля поиска места, где перекусить, нажмите Начать.", replyMarkup: keyboard);
+                SendStart(botClient, message);
                 return;
             }
 
             if (message.Text == "Начать")
             {
-                var categories = _categoryService.GetCategories().ToList();
-                var keyboardbuttons = new KeyboardButton[categories.Count][];
-                for (int i = 0; i < categories.Count; i++)
-                {
-                    keyboardbuttons[i] = new KeyboardButton[] { categories[i].Name };
-                }
-
-                var keyboard = new ReplyKeyboardMarkup(keyboardbuttons);
-                keyboard.ResizeKeyboard = true;
-
-                botClient.SendTextMessageAsync(message.Chat.Id, "Пришло время выбрать, что бы вы хотели покушать!", replyMarkup: keyboard);
+                SendCategoties(botClient, message);
                 return;
             }
 
             if (_categoryService.IsExists(message.Text))
             {
-                var category = _categoryService.GetByNameCategory(message.Text);
-                var restaurants = category.Restaurants.ToList();
-                ReplyKeyboardMarkup keyboard = new(new KeyboardButton[] { "Выбрать другое!" })
-                {
-                    ResizeKeyboard = true
-                };
-                botClient.SendTextMessageAsync(message.Chat.Id, "Места, куда вы можете сходить:", replyMarkup: keyboard);
-                foreach(var restaurant in restaurants)
-                {
-                    botClient.SendTextMessageAsync(message.Chat.Id, $"{restaurant.Name}\r\n{restaurant.Adress}");
-                }
+                SendRestaurants(botClient, message);
                 return;
             }
 
             if (message.Text == "Выбрать другое!")
             {
-                var categories = _categoryService.GetCategories().ToList();
-                var keyboardbuttons = new KeyboardButton[categories.Count][];
-                for (int i = 0; i < categories.Count; i++)
-                {
-                    keyboardbuttons[i] = new KeyboardButton[] { categories[i].Name };
-                }
-
-                var keyboard = new ReplyKeyboardMarkup(keyboardbuttons);
-                keyboard.ResizeKeyboard = true;
-
-                botClient.SendTextMessageAsync(message.Chat.Id, "Что бы вы хотели покушать?", replyMarkup: keyboard);
+                SendAnother(botClient, message);
                 return;
             }
 
             await botClient.SendTextMessageAsync(message.Chat.Id, $"You said:\n{message.Text}");
         }
 
+        private async void SendAnother(ITelegramBotClient botClient, Message message)
+        {
+            var categories = _categoryService.GetCategories().ToList();
+            var keyboardbuttons = new KeyboardButton[categories.Count][];
+            for (int i = 0; i < categories.Count; i++)
+            {
+                keyboardbuttons[i] = new KeyboardButton[] { categories[i].Name };
+            }
+
+            var keyboard = new ReplyKeyboardMarkup(keyboardbuttons);
+            keyboard.ResizeKeyboard = true;
+
+            botClient.SendTextMessageAsync(message.Chat.Id, "Что бы вы хотели покушать?", replyMarkup: keyboard);
+        }
+
+        private async void SendRestaurants(ITelegramBotClient botClient, Message message)
+        {
+            var category = _categoryService.GetByNameCategory(message.Text);
+            var restaurants = category.Restaurants.ToList();
+            var dayofweekname = new List<string> {"Вс","Пн", "Вт", "Ср","Чт","Пт","Сб" };
+            ReplyKeyboardMarkup keyboard = new(new KeyboardButton[] { "Выбрать другое!" })
+            {
+                ResizeKeyboard = true
+            };
+            botClient.SendTextMessageAsync(message.Chat.Id, "Места, куда вы можете сходить:", replyMarkup: keyboard).Wait();
+
+            foreach (var restaurant in restaurants)
+            {
+                var keyboardLink = new InlineKeyboardMarkup(new InlineKeyboardButton[]
+                {
+                        InlineKeyboardButton.WithUrl("Подробнее", $"{restaurant.Link}")
+                });
+                var timetables = restaurant.Timetables.ToList();
+                timetables.Sort((x, y) => x.Day.CompareTo(y.Day));
+                string rr = string.Empty;
+                foreach (var timetable in timetables)
+                {
+                    rr += $"{dayofweekname[(int)timetable.Day]} {timetable.Opened.ToString(@"hh\:mm")}-{timetable.Closed.ToString(@"hh\:mm")}\r\n";
+                }
+                botClient.SendPhotoAsync(message.Chat.Id, photo: restaurant.PhotoLink, $"{restaurant.Name}\r\n\r\n" + rr + $"\r\n{restaurant.Adress}", replyMarkup: keyboardLink);
+            }
+        }
+
+        private async void SendCategoties(ITelegramBotClient botClient, Message message)
+        {
+            var categories = _categoryService.GetCategories().ToList();
+            var keyboardbuttons = new KeyboardButton[categories.Count][];
+            for (int i = 0; i < categories.Count; i++)
+            {
+                keyboardbuttons[i] = new KeyboardButton[] { categories[i].Name };
+            }
+
+            var keyboard = new ReplyKeyboardMarkup(keyboardbuttons);
+            keyboard.ResizeKeyboard = true;
+
+            botClient.SendTextMessageAsync(message.Chat.Id, "Пришло время выбрать, что бы вы хотели покушать!", replyMarkup: keyboard);
+        }
+
+        private async void SendStart(ITelegramBotClient botClient, Message message)
+        {
+            ReplyKeyboardMarkup keyboard = new(new KeyboardButton[] { "Начать" })
+            {
+                ResizeKeyboard = true
+            };
+            await botClient.SendTextMessageAsync(message.Chat.Id, "Добро пожаловать!\r\nДля поиска места, где перекусить, нажмите Начать.", replyMarkup: keyboard);
+        }
     }
 }

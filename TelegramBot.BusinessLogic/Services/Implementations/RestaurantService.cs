@@ -55,5 +55,16 @@ namespace TelegramBot.BusinessLogic.Services.Implementations
             if (_context.Restaurants == null) throw new Exception("Restaurants not found.");
             return _context.Restaurants.ToList();
         }
+
+        public void Edit(int id, RestaurantViewModel model)
+        {
+            var restaurant = GetRestaurant(id).FirstOrDefault();
+            var mapped = _mapper.Map<RestaurantViewModel, Restaurant>(model ,restaurant);
+            mapped.Categories=_mapper.Map<List<Category>>(model.Categories);
+            mapped.Timetables = _mapper.Map<List<Timetable>>(model.Timetables);
+            _context.Restaurants.Update(mapped);
+            _context.SaveChanges();
+            
+        }
     }
 }

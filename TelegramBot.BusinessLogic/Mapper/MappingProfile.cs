@@ -10,6 +10,7 @@ namespace TelegramBot.Common.Mapper
         {
             CreateMap<RestaurantViewModel, Restaurant>();
             CreateMap<CategoryViewModel, Category>();
+            CreateMap<TimetableViewModel, Timetable>();
         }
     }
 }

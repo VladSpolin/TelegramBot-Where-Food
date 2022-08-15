@@ -28,7 +28,7 @@ var serviceProvider = new ServiceCollection()
 serviceProvider.GetService<ApplicationContext>().Seed();
 
 
-var client = new TelegramBotClient("5565583712:AAH1Im3Y-c_Y48rlM14aXJlmuKriY8ZbmqU");
+var client = new TelegramBotClient("5497319999:AAHHKTLCfGq5hmjO5y_k0W4Tz3-bS84xAxw");
 
 using var cts = new CancellationTokenSource();
 
@@ -37,7 +37,7 @@ var receiverOptions = new ReceiverOptions
     AllowedUpdates = { }
 };
 
-var telegramBotController = new TelegramBotController(serviceProvider.GetService<IRestaurantService>(), serviceProvider.GetService<ICategoryService>());
+var telegramBotController = new TelegramBotController(serviceProvider.GetService<ICategoryService>());
 
 
 client.StartReceiving(

@@ -12,5 +12,6 @@ namespace TelegramBot.BusinessLogic.Services.Interfaces
         void Create(CategoryViewModel model);
         void Delete(int id);
         bool IsExists(string name);
+        void Edit(int id, CategoryViewModel model);
     }
 }

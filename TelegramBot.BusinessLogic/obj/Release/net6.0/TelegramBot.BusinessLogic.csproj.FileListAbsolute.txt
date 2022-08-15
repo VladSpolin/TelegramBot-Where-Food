@@ -1,0 +1,17 @@
+D:\My projects C#\TelegramBot\TelegramBot.BusinessLogic\bin\Release\net6.0\TelegramBot.BusinessLogic.deps.json
+D:\My projects C#\TelegramBot\TelegramBot.BusinessLogic\bin\Release\net6.0\TelegramBot.BusinessLogic.dll
+D:\My projects C#\TelegramBot\TelegramBot.BusinessLogic\bin\Release\net6.0\TelegramBot.BusinessLogic.pdb
+D:\My projects C#\TelegramBot\TelegramBot.BusinessLogic\bin\Release\net6.0\TelegramBot.Common.dll
+D:\My projects C#\TelegramBot\TelegramBot.BusinessLogic\bin\Release\net6.0\TelegramBot.Model.dll
+D:\My projects C#\TelegramBot\TelegramBot.BusinessLogic\bin\Release\net6.0\TelegramBot.Common.pdb
+D:\My projects C#\TelegramBot\TelegramBot.BusinessLogic\bin\Release\net6.0\TelegramBot.Model.pdb
+D:\My projects C#\TelegramBot\TelegramBot.BusinessLogic\obj\Release\net6.0\TelegramBot.BusinessLogic.csproj.AssemblyReference.cache
+D:\My projects C#\TelegramBot\TelegramBot.BusinessLogic\obj\Release\net6.0\TelegramBot.BusinessLogic.GeneratedMSBuildEditorConfig.editorconfig
+D:\My projects C#\TelegramBot\TelegramBot.BusinessLogic\obj\Release\net6.0\TelegramBot.BusinessLogic.AssemblyInfoInputs.cache
+D:\My projects C#\TelegramBot\TelegramBot.BusinessLogic\obj\Release\net6.0\TelegramBot.BusinessLogic.AssemblyInfo.cs
+D:\My projects C#\TelegramBot\TelegramBot.BusinessLogic\obj\Release\net6.0\TelegramBot.BusinessLogic.csproj.CoreCompileInputs.cache
+D:\My projects C#\TelegramBot\TelegramBot.BusinessLogic\obj\Release\net6.0\TelegramBot.BusinessLogic.csproj.CopyComplete
+D:\My projects C#\TelegramBot\TelegramBot.BusinessLogic\obj\Release\net6.0\TelegramBot.BusinessLogic.dll
+D:\My projects C#\TelegramBot\TelegramBot.BusinessLogic\obj\Release\net6.0\refint\TelegramBot.BusinessLogic.dll
+D:\My projects C#\TelegramBot\TelegramBot.BusinessLogic\obj\Release\net6.0\TelegramBot.BusinessLogic.pdb
+D:\My projects C#\TelegramBot\TelegramBot.BusinessLogic\obj\Release\net6.0\ref\TelegramBot.BusinessLogic.dll

@@ -2,8 +2,8 @@
 using TelegramBot.BusinessLogic.Services.Interfaces;
 using TelegramBot.Common.ViewModels;
 using TelegramBot.Model;
-using TelegramBot.Common.ViewModels;
 using TelegramBot.Model.DataBaseModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace TelegramBot.BusinessLogic.Services.Implementations
 {
@@ -28,11 +28,11 @@ namespace TelegramBot.BusinessLogic.Services.Implementations
 
         public void Delete(int id)
         {
-            _context.Categories.Remove(GetCategoty(id).FirstOrDefault());
+            _context.Categories.Remove(GetCategory(id).FirstOrDefault());
             _context.SaveChanges();
         }
 
-        private IQueryable<Category> GetCategoty(int id)
+        private IQueryable<Category> GetCategory(int id)
         {
             if (!_context.Categories.Any(x => x.Id == id)) throw new Exception("Category not found.");
 
@@ -41,7 +41,7 @@ namespace TelegramBot.BusinessLogic.Services.Implementations
 
         public CategoryViewModel Get(int id)
         {
-            return _mapper.Map<Category, CategoryViewModel>(GetCategoty(id).FirstOrDefault());
+            return _mapper.Map<Category, CategoryViewModel>(GetCategory(id).FirstOrDefault());
         }
 
         public IEnumerable<Category> GetCategories()
@@ -54,9 +54,9 @@ namespace TelegramBot.BusinessLogic.Services.Implementations
         {
             if (!_context.Categories.Any(x => x.Name == name)) throw new Exception("Category not found.");
 
-            var category = _context.Categories.Where(x => x.Name == name).FirstOrDefault();
+            var category = _context.Categories.Include(x=>x.Restaurants).Where(x => x.Name == name).FirstOrDefault();
             var mapped = _mapper.Map<Category, CategoryViewModel>(category);
-            //mapped.Restaurants = category.Restaurants;
+            mapped.Restaurants = _mapper.Map<List<Restaurant>, List<RestaurantViewModel>>(category.Restaurants);
             return mapped;
         }
 
@@ -73,11 +73,18 @@ namespace TelegramBot.BusinessLogic.Services.Implementations
         {
             if (!_context.Categories.Any(x => x.Name == name)) throw new Exception("Category not found.");
           
-            return _context.Categories.Where(x => x.Name == name).FirstOrDefault();
+            return _context.Categories.Include(x=>x.Restaurants).Where(x => x.Name == name).FirstOrDefault();
         }
 
 
 
-
+        public void Edit(int id, CategoryViewModel model)
+        {
+            var category = GetCategory(id).FirstOrDefault();
+            var mapped = _mapper.Map<CategoryViewModel, Category>(model, category);
+            mapped.Restaurants = _mapper.Map<List<Restaurant>>(model.Restaurants);
+            _context.Categories.Update(mapped);
+            _context.SaveChanges();
+        }
     }
 }

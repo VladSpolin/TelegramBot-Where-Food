@@ -10,5 +10,6 @@ namespace TelegramBot.BusinessLogic.Services.Interfaces
         RestaurantViewModel GetByName(string name);
         void Create(RestaurantViewModel model);
         void Delete(int id);
+        void Edit(int id, RestaurantViewModel model);
     }
 }
