@@ -41,7 +41,10 @@ namespace TelegramBot.BusinessLogic.Services.Implementations
 
         public CategoryViewModel Get(int id)
         {
-            return _mapper.Map<Category, CategoryViewModel>(GetCategory(id).FirstOrDefault());
+            var category = GetCategory(id).FirstOrDefault();
+            var mapped = _mapper.Map<Category, CategoryViewModel>(category);
+            mapped.Restaurants = _mapper.Map<List<RestaurantViewModel>>(category.Restaurants);
+            return mapped;
         }
 
         public IEnumerable<Category> GetCategories()
@@ -54,7 +57,7 @@ namespace TelegramBot.BusinessLogic.Services.Implementations
         {
             if (!_context.Categories.Any(x => x.Name == name)) throw new Exception("Category not found.");
 
-            var category = _context.Categories.Include(x=>x.Restaurants).Where(x => x.Name == name).FirstOrDefault();
+            var category = _context.Categories.Include(x=>x.Restaurants).ThenInclude(x=>x.Timetables).Where(x => x.Name == name).FirstOrDefault();
             var mapped = _mapper.Map<Category, CategoryViewModel>(category);
             mapped.Restaurants = _mapper.Map<List<Restaurant>, List<RestaurantViewModel>>(category.Restaurants);
             return mapped;
@@ -66,15 +69,6 @@ namespace TelegramBot.BusinessLogic.Services.Implementations
         }
 
 
-
-
-
-        public Category GetByNameCategory(string name)
-        {
-            if (!_context.Categories.Any(x => x.Name == name)) throw new Exception("Category not found.");
-          
-            return _context.Categories.Include(x=>x.Restaurants).Where(x => x.Name == name).FirstOrDefault();
-        }
 
 
 

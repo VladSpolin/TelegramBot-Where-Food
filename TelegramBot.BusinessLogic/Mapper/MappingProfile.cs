@@ -9,8 +9,11 @@ namespace TelegramBot.Common.Mapper
         public MappingProfile()
         {
             CreateMap<RestaurantViewModel, Restaurant>();
+            CreateMap<Restaurant, RestaurantViewModel>();
             CreateMap<CategoryViewModel, Category>();
+            CreateMap<Category, CategoryViewModel>();
             CreateMap<TimetableViewModel, Timetable>();
+            CreateMap<Timetable, TimetableViewModel>();
         }
     }
 }

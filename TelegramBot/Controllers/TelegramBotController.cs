@@ -3,15 +3,18 @@ using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 using TelegramBot.BusinessLogic.Services.Interfaces;
+using TelegramBot.Model.DataBaseModels;
 
 namespace TelegramBot.Controllers
 {
     public class TelegramBotController
     {
         private readonly ICategoryService _categoryService;
-        public TelegramBotController(ICategoryService categoryService)
+        private readonly IRequestHistoryService _requestHistoryService;
+        public TelegramBotController(ICategoryService categoryService, IRequestHistoryService requestHistoryService)
         {
             _categoryService = categoryService;
+            _requestHistoryService = requestHistoryService;
         }
 
 
@@ -35,29 +38,34 @@ namespace TelegramBot.Controllers
         {
             if (message.Text == "/start")
             {
+                _requestHistoryService.Create(new RequestHistory { Command = message.Text, Time = DateTime.Now });
                 SendStart(botClient, message);
                 return;
             }
 
             if (message.Text == "Начать")
             {
+                _requestHistoryService.Create(new RequestHistory { Command = message.Text, Time = DateTime.Now });
                 SendCategoties(botClient, message);
                 return;
             }
 
             if (_categoryService.IsExists(message.Text))
             {
+                _requestHistoryService.Create(new RequestHistory { Command = message.Text, Time = DateTime.Now });
                 SendRestaurants(botClient, message);
                 return;
             }
 
             if (message.Text == "Выбрать другое!")
             {
+                _requestHistoryService.Create(new RequestHistory { Command = message.Text, Time = DateTime.Now });
                 SendAnother(botClient, message);
                 return;
             }
 
             await botClient.SendTextMessageAsync(message.Chat.Id, $"You said:\n{message.Text}");
+            _requestHistoryService.Create(new RequestHistory { Command = "Unknown request", Time = DateTime.Now });
         }
 
         private async void SendAnother(ITelegramBotClient botClient, Message message)
@@ -77,7 +85,7 @@ namespace TelegramBot.Controllers
 
         private async void SendRestaurants(ITelegramBotClient botClient, Message message)
         {
-            var category = _categoryService.GetByNameCategory(message.Text);
+            var category = _categoryService.GetByName(message.Text);
             var restaurants = category.Restaurants.ToList();
             var dayofweekname = new List<string> {"Вс","Пн", "Вт", "Ср","Чт","Пт","Сб" };
             ReplyKeyboardMarkup keyboard = new(new KeyboardButton[] { "Выбрать другое!" })

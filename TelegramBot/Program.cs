@@ -20,6 +20,7 @@ var serviceProvider = new ServiceCollection()
             .AddLogging()
             .AddTransient<ICategoryService, CategoryService>()
             .AddTransient<IRestaurantService, RestaurantService>()
+            .AddTransient<IRequestHistoryService, RequestHistoryService>()
             .AddDbContext<ApplicationContext>()
             .AddSingleton(mapper)
             .BuildServiceProvider();
@@ -37,7 +38,7 @@ var receiverOptions = new ReceiverOptions
     AllowedUpdates = { }
 };
 
-var telegramBotController = new TelegramBotController(serviceProvider.GetService<ICategoryService>());
+var telegramBotController = new TelegramBotController(serviceProvider.GetService<ICategoryService>(), serviceProvider.GetService<IRequestHistoryService>());
 
 
 client.StartReceiving(

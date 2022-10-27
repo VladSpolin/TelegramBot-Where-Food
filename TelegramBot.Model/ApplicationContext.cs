@@ -7,8 +7,8 @@ namespace TelegramBot.Model
     {
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
-            Database.EnsureDeleted();
-            Database.EnsureCreated();
+            //Database.EnsureDeleted();
+            //Database.EnsureCreated();
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -19,5 +19,6 @@ namespace TelegramBot.Model
         public DbSet<Restaurant> Restaurants { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Timetable> Timetables { get; set; }
+        public DbSet<RequestHistory> HistoryRequests { get; set; }
     }
 }

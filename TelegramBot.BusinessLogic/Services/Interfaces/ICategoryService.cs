@@ -8,7 +8,6 @@ namespace TelegramBot.BusinessLogic.Services.Interfaces
         IEnumerable<Category> GetCategories();
         CategoryViewModel Get(int id);
         CategoryViewModel GetByName(string name);
-        Category GetByNameCategory(string name);
         void Create(CategoryViewModel model);
         void Delete(int id);
         bool IsExists(string name);

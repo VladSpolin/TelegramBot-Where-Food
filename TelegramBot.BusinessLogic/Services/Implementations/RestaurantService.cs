@@ -39,7 +39,11 @@ namespace TelegramBot.BusinessLogic.Services.Implementations
 
         public RestaurantViewModel Get(int id)
         {
-            return _mapper.Map<Restaurant, RestaurantViewModel>(GetRestaurant(id).FirstOrDefault());
+            var restaurant = GetRestaurant(id).FirstOrDefault();
+            var mapped = _mapper.Map<RestaurantViewModel>(restaurant);
+            mapped.Categories = _mapper.Map<List<CategoryViewModel>>(restaurant.Categories);
+            mapped.Timetables = _mapper.Map<List<TimetableViewModel>>(restaurant.Timetables);
+            return mapped;
         }
 
         public RestaurantViewModel GetByName(string name)
